@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Global Solutions - Agent</h1>
+<h3>name - {{ agent.name }}</h3>
+<h3>type - {{ agent.cat }}</h3>
+<h3>language - {{ agent.lang }}</h3>
+<h3>status - {{ agent.status }}</h3>
+<form method="post">
+    {% csrf_token %}
+    {% if agent.status == 'STOP' %}
+        <button type="submit">RUN</button>
+    {% else %}
+        <button type="submit">STOP</button>
+    {% endif %}
+</form>
+</body>
+</html>

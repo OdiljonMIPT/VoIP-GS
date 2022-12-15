@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    {% for agent in agents %}
+        <li>
+            <a href="/agent/{{ agent.id }}">{{ forloop.counter }}. {{ agent.name }}</a>
+        </li>
+    {% endfor %}
+</ul>
+</body>
+</html>
