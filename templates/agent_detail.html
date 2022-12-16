@@ -17,6 +17,9 @@
     {% else %}
         <button type="submit">STOP</button>
     {% endif %}
+    {% if agent.cat == 'OUTBOUND' %}
+        <input name="number" type="number">
+    {% endif %}
 </form>
 </body>
 </html>

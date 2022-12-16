@@ -1,29 +1,47 @@
 from pyVoIP.VoIP import VoIPPhone, InvalidStateError, CallState
 import time
 import wave
+from app.models import Voice
+
+
+def say(call, name):
+    path = Voice.objects.get(name=name)
+    f = wave.open(path, 'rb')
+    frames = f.getnframes()
+    data = f.readframes(frames)
+    f.close()
+    call.answer()
+    # time.sleep(2)
+    call.write_audio(data)
+    stop = time.time() + frames // 8000
+    print('answering..', end='')
+    while time.time() <= stop and call.state == CallState.ANSWERED:
+        time.sleep(0.1)
 
 
 def answer(call):
     try:
-        f = wave.open('../hello_welcome_uz-8bit.wav', 'rb')
-        # f = wave.open('/usr/share/freeswitch/sounds/en/us/callie/aziza/hello_welcome_uz.wav', 'rb')
-        frames = f.getnframes()
-        data = f.readframes(frames)
-        f.close()
-        call.answer()
-        # print(call.RTPClients)
-        # time.sleep(5)
-        call.write_audio(data)
-        stop = time.time() + 8
-        print('answering..', end='')
-        while time.time() <= stop and call.state == CallState.ANSWERED:
-            time.sleep(0.1)
-            # print('answering.. ', end='')
-
-        # print()
+        time.sleep(2)
+        say(call, 'hello_welcome')
+        time.sleep(1)
+        say(call, 'how_can_i_help')
+        time.sleep(8)
+        say(call, 'check_person')
+        time.sleep(2)
+        say(call, 'check_name')
+        time.sleep(2)
+        say(call, 'info_packet')
+        time.sleep(2)
+        say(call, 'packet_turn_off')
+        time.sleep(2)
+        say(call, 'success_bye')
+        time.sleep(1)
         call.hangup()
+
     except InvalidStateError:
         print('errrroooooooor')
+        call.hangup()
+
     except Exception as e:
         print('new errrroooorr ', e)
         call.hangup()
