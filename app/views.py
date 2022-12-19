@@ -1,17 +1,17 @@
 from django.shortcuts import redirect, HttpResponse, render
 from .models import Agent
-from logic.gsmobile import phone as phone_mobile
+from logic.gsmobile import run as phone_mobile
 from logic.payment import run as phone_payment
 from pyVoIP.SIP import InvalidAccountInfoError
 import threading
 
 
 def home(request):
-    return redirect('/admin')
+    return render(request, 'index.html')
 
 
-def run(request):
-    return HttpResponse('ok')
+# def run(request):
+#     return HttpResponse('ok')
 
 
 def agent(request):
@@ -25,33 +25,17 @@ def agent_detail(request, pk):
         if agent_obj.status == 'STOP':
             agent_obj.status = 'RUN'
             if agent_obj.cat == 'INBOUND':
-                try:
-                    # phone.start()
-                    t = threading.Thread(target=phone_mobile.start)
-                    t.start()
-                except Exception as e:
-                    # phone.start()
-                    print(e)
-                    t = threading.Thread(target=phone_mobile.start)
-                    t.start()
+                t = threading.Thread(target=phone_mobile)
+                t.start()
             else:
                 number = request.POST.get('number')
-                try:
-                    # phone.start()
-                    t = threading.Thread(target=phone_payment, args=[number])
-                    t.start()
-                    # phone_payment.call('900969699')
-                except Exception as e:
-                    # phone.start()
-                    print(e)
-                    t = threading.Thread(target=phone_payment, args=[number])
-                    t.start()
-                    # phone_payment.call('900969699')
-
+                t = threading.Thread(target=phone_payment, args=[number])
+                t.start()
         else:
             agent_obj.status = 'STOP'
             if agent_obj.cat == 'INBOUND':
-                phone_mobile.stop()
+                pass
+                # phone_mobile.stop()
             else:
                 # phone_payment.stop()
                 pass

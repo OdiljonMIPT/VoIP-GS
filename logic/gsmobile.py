@@ -47,8 +47,17 @@ def answer(call):
         call.hangup()
 
 
-phone = VoIPPhone(server='217.29.116.216', port=5060, username='781133702',
-                  password='a4RHeHnE', callCallback=answer)
+def run():
+    try:
+        phone = VoIPPhone(server='217.29.116.216', port=5060, username='781133702',
+                          password='a4RHeHnE', callCallback=answer)
+        phone.start()
+        print('waiting...')
+    except:
+        phone = VoIPPhone(server='217.29.116.216', port=5060, username='781133702',
+                          password='a4RHeHnE', callCallback=answer)
+        phone.start()
+        print('waiting...')
 
 # if __name__ == "__main__":
 #     phone = VoIPPhone(server='217.29.116.216', port=5060, username='781133702',

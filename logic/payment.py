@@ -1,6 +1,9 @@
 from pyVoIP.VoIP import VoIPPhone, InvalidStateError, CallState
 import time
 import wave
+import pyVoIP
+
+pyVoIP.DEBUG = False
 
 
 def answer(call):
@@ -30,13 +33,22 @@ def answer(call):
 
 
 def run(number):
-    phone = VoIPPhone(server='217.29.116.216', port=5060, username='781133702',
-                      password='a4RHeHnE', callCallback=answer)
-    phone.start()
-    print('calling...')
-    phone.call(number)
-    # call.hangup()
-    phone.stop()
+    try:
+        phone = VoIPPhone(server='217.29.116.216', port=5060, username='781133702',
+                          password='a4RHeHnE', callCallback=answer)
+        phone.start()
+        print('calling...')
+        phone.call(number)
+        # call.hangup()
+        phone.stop()
+    except:
+        phone = VoIPPhone(server='217.29.116.216', port=5060, username='781133702',
+                          password='a4RHeHnE', callCallback=answer)
+        phone.start()
+        print('calling...')
+        phone.call(number)
+        # call.hangup()
+        phone.stop()
 
 # if __name__ == "__main__":
 #     phone = VoIPPhone(server='217.29.116.216', port=5060, username='781133702',
